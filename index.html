@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>WAS Boutique</title>
-<link rel="preconnect" href="https://fonts.googleapis.com ">
-<link rel="preconnect" href="https://fonts.gstatic.com " crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital ,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js "></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js "></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <style>
 :root {
   --bg:       #080808;
@@ -70,7 +70,7 @@ img{display:block;max-width:100%;height:auto}
 .orb1{width:400px;height:400px;top:-80px;left:-100px;background:radial-gradient(circle,rgba(233,30,99,.08) 0%,transparent 70%);animation:orb 12s ease-in-out infinite alternate}
 .orb2{width:350px;height:350px;bottom:-60px;right:-80px;background:radial-gradient(circle,rgba(242,235,225,.04) 0%,transparent 70%);animation:orb 16s ease-in-out infinite alternate-reverse}
 @keyframes orb{0%{transform:translate(0,0)}100%{transform:translate(24px,16px)}}
-.grain{position:absolute;inset:0;pointer-events:none;opacity:.25;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg '%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:120px;mix-blend-mode:overlay}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.25;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:120px;mix-blend-mode:overlay}
 .hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;width:100%;max-width:100%}
 .h-logo{height:clamp(80px,18vw,160px);width:auto;margin:0 auto 32px;opacity:0;transform:translateY(32px);max-width:90%}
 .h-sub{font-size:clamp(12px,2vw,15px);letter-spacing:.06em;color:var(--dim);margin-bottom:48px;opacity:0;transform:translateY(16px);word-break:break-word}
@@ -621,7 +621,7 @@ img{display:block;max-width:100%;height:auto}
 gsap.registerPlugin(ScrollTrigger);
 
 const CONFIG = {
-  cfWorkerUrl: 'https://wasboutiqueworker.adrienmuhabukibusiness.workers.dev ',
+  cfWorkerUrl: 'https://wasboutiqueworker.adrienmuhabukibusiness.workers.dev',
   useMockData: false
 };
 const FORMSPREE_ID = 'YOUR_FORMSPREE_ID';
@@ -777,7 +777,7 @@ async function submitContactForm(){
   if(FORMSPREE_ID==='YOUR_FORMSPREE_ID'){showFormStatus('Form not yet connected — add your Formspree ID.','error');return;}
   btn.textContent='Sending...';btn.disabled=true;
   try{
-    const res=await fetch(`https://formspree.io/f/ ${FORMSPREE_ID}`,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,email,subject,message:msg,_replyto:email,_subject:`WAS Boutique — ${subject||name}`})});
+    const res=await fetch(`https://formspree.io/f/${FORMSPREE_ID}`,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,email,subject,message:msg,_replyto:email,_subject:`WAS Boutique — ${subject||name}`})});
     if(res.ok){showFormStatus("Message sent! We'll get back to you within 24 hours.",'success');['cf-name','cf-email','cf-subject','cf-msg'].forEach(id=>document.getElementById(id).value='');}
     else{const d=await res.json();showFormStatus(d?.errors?.[0]?.message||'Something went wrong.','error');}
   }catch(e){showFormStatus('Network error. Please email wasboutique@yahoo.com directly.','error');}
