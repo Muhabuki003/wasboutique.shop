@@ -756,14 +756,25 @@ async function fetchSquareCatalog(){
   }catch(e){console.warn('[Square] fetch failed:',e);}
 }
 function applySquareCatalog(raw){
-  const mapped=raw.map((p,i)=>({id:p.id,name:p.name,description:p.description||'',category:(p.category&&p.category!=='Other')?p.category:inferCat(p.name),price:p.price||0,imageUrls:p.imageUrls||[],g:GRAD[i%8],isNew:false,isBest:false,variants:p.variants?.length?p.variants:[{id:p.id+'_v',name:'One Size',price:p.price||0}]}));
-  PRODUCTS.length=0;mapped.forEach(p=>PRODUCTS.push(p));
-  const catNames=[...new Set(PRODUCTS.map(p=>p.category))].filter(Boolean);
-  CATEGORIES.length=0;catNames.forEach((name,i)=>CATEGORIES.push({name,count:PRODUCTS.filter(p=>p.category===name).length,g:GRAD[i%8]}));
-  const fb=document.getElementById('filter-bar');
-  if(fb) fb.innerHTML=`<button class="f-btn active" data-f="all" onclick="applyFilter(this,'all')">All</button>`+catNames.map(c=>`<button class="f-btn" data-f="${c}" onclick="applyFilter(this,'${c}')">${c}</button>`).join('');
-  renderFeatured();renderCategories();renderStrip();renderShop();renderLookbook();
-}
+  const mapped = raw.map((p,i)=>({
+  id: p.id,
+  name: p.name,
+  description: p.description || '',
+  
+  // 🔥 FORCE SIMPLE CATEGORY
+  category: 'All',
+
+  // 🔥 SHOW TEST PRICE
+  price: p.price || 25,
+
+  // 🔥 FALLBACK IMAGE
+  imageUrls: p.imageUrls.length 
+    ? p.imageUrls 
+    : ['https://via.placeholder.com/400x500?text=Product'],
+
+  g: GRAD[i%8],
+  variants: p.variants?.length ? p.variants : [{name:'One Size'}]
+}));
 function inferCat(name){const n=(name||'').toLowerCase();if(n.includes('ring'))return'Rings';if(n.includes('necklace'))return'Necklaces';if(n.includes('earring'))return'Earrings';if(n.includes('bracelet'))return'Bracelets';if(n.includes('purse')||n.includes('bag'))return'Purses';if(n.includes('shoe'))return'Shoes';if(n.includes('hat'))return'Hats';if(n.includes('candle'))return'Candles';if(n.includes('denim')||n.includes('jacket'))return'Clothing';if(n.includes('beauty'))return'Beauty';if(n.includes('sunglass'))return'Sunglasses';if(n.includes('kids'))return'Kids';return'Accessories';}
 
 /* CONTACT FORM */
