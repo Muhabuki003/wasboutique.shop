@@ -701,16 +701,20 @@ function switchThumb(el,src,isUrl){document.querySelectorAll('.pd-thumb').forEac
 function selectVariant(el,v){document.querySelectorAll('.var-chip').forEach(c=>c.classList.remove('act'));el.classList.add('act');activeVariant=v;}
 
 /* SQUARE CATALOG */
-const CACHE_KEY='was_catalog_v4';
+const CACHE_KEY='was_catalog_v5';
 const CACHE_TTL=5*60*1000;
 async function fetchSquareCatalog(){
   try{
-    const raw=localStorage.getItem(CACHE_KEY);
-    if(raw){
-      const{products,ts}=JSON.parse(raw);
-      if(products?.length){applySquareCatalog(products);if(Date.now()-ts<CACHE_TTL)return;}
+    const res=await fetch(CONFIG.cfWorkerUrl+'/catalog');
+    const data=await res.json();
+    console.log('[Square] catalog response:', data);
+    if(data.products?.length){
+      localStorage.setItem(CACHE_KEY,JSON.stringify({products:data.products,ts:Date.now()}));
+      applySquareCatalog(data.products);
+    } else {
+      console.warn('[Square] no products in response', data);
     }
-  }catch(e){}
+  }catch(e){console.warn('[Square] fetch failed:',e);}
   try{
     const res=await fetch(CONFIG.cfWorkerUrl+'/catalog');
     const data=await res.json();
