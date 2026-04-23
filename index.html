@@ -594,6 +594,7 @@ const CONFIG = {
 const FORMSPREE_ID = 'YOUR_FORMSPREE_ID';
 const GRAD = ['g1','g2','g3','g4','g5','g6','g7','g8'];
 let PRODUCTS=[], CATEGORIES=[];
+PRODUCTS = PRODUCTS.filter(item => item.name.toLowerCase() !== 'shipping');
 
 const FAQ_DATA=[
   {q:'How long does shipping take?',a:'Standard shipping is 5–8 business days. Express and overnight available at checkout. Free standard shipping on orders over $75.'},
