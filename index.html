@@ -392,6 +392,7 @@ img{display:block;max-width:100%}
   .m-item{font-size:17px;padding:0 24px;gap:24px}
 }
 </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -725,7 +726,8 @@ async function fetchSquareCatalog(){
   }catch(e){console.warn('[Square] fetch failed:',e);}
 }
 function applySquareCatalog(raw){
-  const mapped=raw.map((p,i)=>({id:p.id,name:p.name,description:p.description||'',category:(p.category&&p.category!=='Other')?p.category:inferCat(p.name),price:p.price||0,imageUrls:p.imageUrls||[],g:GRAD[i%8],isNew:false,isBest:false,variants:p.variants?.length?p.variants:[{id:p.id+'_v',name:'One Size',price:p.price||0}]}));
+  const filtered=raw.filter(p=>{const n=(p.name||'').toLowerCase();return!n.includes('shipping')&&!n.includes('delivery')&&!n.includes('ship')});
+  const mapped=filtered.map((p,i)=>({id:p.id,name:p.name,description:p.description||'',category:(p.category&&p.category!=='Other')?p.category:inferCat(p.name),price:p.price||0,imageUrls:p.imageUrls||[],g:GRAD[i%8],isNew:false,isBest:false,variants:p.variants?.length?p.variants:[{id:p.id+'_v',name:'One Size',price:p.price||0}]}));
   PRODUCTS.length=0;mapped.forEach(p=>PRODUCTS.push(p));
   const catNames=[...new Set(PRODUCTS.map(p=>p.category))].filter(Boolean);
   CATEGORIES.length=0;catNames.forEach((name,i)=>CATEGORIES.push({name,count:PRODUCTS.filter(p=>p.category===name).length,g:GRAD[i%8]}));
