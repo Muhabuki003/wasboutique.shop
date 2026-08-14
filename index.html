@@ -470,7 +470,7 @@ img{display:block;max-width:100%}
     <div><div class="ft-logo">WAS Boutique</div><p class="ft-about">Curated Pieces for those who wear their story on their skin.</p></div>
     <div><div class="ft-col-ttl">Shop</div><ul class="ft-links"><li onclick="go('shop')">All Pieces</li><li onclick="goShopFilter('Rings')">Rings</li><li onclick="goShopFilter('Necklaces')">Necklaces</li><li onclick="goShopFilter('Earrings')">Earrings</li><li onclick="goShopFilter('Bracelets')">Bracelets</li></ul></div>
     <div><div class="ft-col-ttl">Info</div><ul class="ft-links"><li onclick="go('about')">About</li><li onclick="go('lookbook')">Lookbook</li><li onclick="go('contact')">Contact</li><li onclick="go('contact')">FAQ</li></ul></div>
-    <div><div class="ft-col-ttl">Follow</div><ul class="ft-links"><li>@wasboutique</li><li>wasboutique@yahoo.com</li></ul></div>
+    <div><div class="ft-col-ttl">Follow</div><ul class="ft-links"><li>@wasboutique</li><li>amburnett55@yahoo.com</li></ul></div>
   </div>
   <div class="footer-btm"><span>© 2026 WAS Boutique</span><span>Built by <span style="color:var(--pink)">Booki Studio</span></span></div>
 </div>
@@ -542,7 +542,7 @@ img{display:block;max-width:100%}
           <button class="form-sub" onclick="submitContactForm()">Send Message</button>
         </div>
         <div class="socials">
-          <div class="soc-link"><span class="soc-icon">✉</span><span class="soc-name">wasboutique@yahoo.com</span></div>
+          <div class="soc-link"><span class="soc-icon">✉</span><span class="soc-name">amburnett55@yahoo.com</span></div>
           <div class="soc-link"><span class="soc-icon">◻</span><span class="soc-name">@wasboutique</span></div>
           <div class="soc-link"><span class="soc-icon">▷</span><span class="soc-name">@wasboutique_official</span></div>
         </div>
@@ -746,7 +746,7 @@ async function submitContactForm(){
     const res=await fetch(`https://formspree.io/f/${FORMSPREE_ID}`,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,email,subject,message:msg,_replyto:email,_subject:`WAS Boutique — ${subject||name}`})});
     if(res.ok){showFormStatus("Message sent! We'll get back to you within 24 hours.",'success');['cf-name','cf-email','cf-subject','cf-msg'].forEach(id=>document.getElementById(id).value='');}
     else{const d=await res.json();showFormStatus(d?.errors?.[0]?.message||'Something went wrong.','error');}
-  }catch(e){showFormStatus('Network error. Please email wasboutique@yahoo.com directly.','error');}
+  }catch(e){showFormStatus('Network error. Please email amburnett55@yahoo.com directly.','error');}
   btn.textContent='Send Message';btn.disabled=false;
 }
 function showFormStatus(msg,type){const el=document.getElementById('cf-status');el.textContent=msg;el.style.display='block';el.style.color=type==='success'?'var(--ivory)':'var(--pink)';el.style.borderColor=type==='success'?'var(--border)':'rgba(233,30,99,.3)';}
