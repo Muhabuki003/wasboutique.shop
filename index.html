@@ -280,6 +280,32 @@ img{display:block;max-width:100%}
 .cart-sub-amt{font-family:var(--font-d);font-size:24px;color:var(--ivory)}
 .checkout-btn{width:100%;padding:17px;background:var(--pink);color:#fff;font-family:var(--font-b);font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border:none;transition:background .2s}
 .checkout-btn:hover{background:var(--pink-hi)}
+.checkout-btn:disabled{opacity:.6;cursor:default}
+/* ── CHECKOUT STEP (address + totals) ── */
+.co-step{display:none;padding-top:18px}
+.co-step.open{display:block}
+.co-step-hd{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.co-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.co-grid .form-g{min-width:0}
+.co-full{grid-column:1/-1}
+.co-in{background:transparent;border:1px solid var(--border);color:var(--ivory);padding:11px 13px;font-family:var(--font-b);font-size:13px;font-weight:300;outline:none;transition:border-color .2s;width:100%;border-radius:0}
+.co-in:focus{border-color:var(--border-hi)}
+.co-in::placeholder{color:var(--muted)}
+select.co-in{background:var(--surface);cursor:pointer;-webkit-appearance:none;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.co-err{display:none;font-size:11px;color:var(--pink);margin-top:12px;letter-spacing:.04em}
+.co-err.show{display:block}
+.co-totals{display:none;margin-bottom:16px}
+.co-totals.show{display:block}
+.co-tot-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--dim);padding:4px 0}
+.co-tot-row .co-tot-amt{color:var(--ivory);font-size:13px}
+.co-tot-row.co-tot-main{border-top:1px solid var(--border);margin-top:9px;padding-top:11px}
+.co-tot-row.co-tot-main .co-tot-lbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.co-tot-row.co-tot-main .co-tot-amt{font-family:var(--font-d);font-size:23px;color:var(--ivory)}
+.co-free{color:var(--pink)!important;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.co-note{font-size:10px;color:var(--muted);letter-spacing:.04em;line-height:1.6;margin-top:9px}
+.co-edit{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);text-decoration:underline;text-underline-offset:3px;margin-top:8px;display:inline-block}
+.co-edit:hover{color:var(--pink)}
+.co-spin{opacity:.55}
 
 /* ── FOOTER ──────────────────────── */
 .footer{border-top:1px solid var(--border);padding:64px 48px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;max-width:var(--mw);margin:0 auto}
@@ -359,6 +385,7 @@ img{display:block;max-width:100%}
   .pd-recs-grid{grid-template-columns:repeat(3,1fr)}
 
   .cart-drawer{width:100%;right:-100%}
+  .co-grid{grid-template-columns:1fr}
   .cart-hd{padding:16px 16px}
   .cart-body{padding:14px 16px}
   .cart-ft{padding:14px 16px}
@@ -575,10 +602,33 @@ img{display:block;max-width:100%}
   </div>
   <div class="cart-body" id="cart-body">
     <div class="cart-empty-state" id="cart-empty"><span class="cart-empty-icon">◇</span><span class="cart-empty-txt">Your bag is empty</span></div>
+    <div class="co-step" id="co-step">
+      <p class="co-step-hd">Shipping &amp; Tax — where should we send it?</p>
+      <div class="co-grid">
+        <div class="form-g co-full"><label class="form-lbl" for="co-name">Full name</label><input class="co-in" id="co-name" type="text" autocomplete="name" placeholder="Jane Doe"></div>
+        <div class="form-g co-full"><label class="form-lbl" for="co-line1">Address line 1</label><input class="co-in" id="co-line1" type="text" autocomplete="address-line1" placeholder="1400 Smith St"></div>
+        <div class="form-g co-full"><label class="form-lbl" for="co-line2">Address line 2 <span style="color:var(--muted)">(optional)</span></label><input class="co-in" id="co-line2" type="text" autocomplete="address-line2" placeholder="Apt, suite, unit"></div>
+        <div class="form-g co-full"><label class="form-lbl" for="co-city">City</label><input class="co-in" id="co-city" type="text" autocomplete="address-level2" placeholder="Houston"></div>
+        <div class="form-g"><label class="form-lbl" for="co-state">State</label><select class="co-in" id="co-state"></select></div>
+        <div class="form-g" id="co-region-wrap" style="display:none"><label class="form-lbl" for="co-region">Province / region</label><input class="co-in" id="co-region" type="text" autocomplete="address-level1" placeholder="ON"></div>
+        <div class="form-g"><label class="form-lbl" for="co-zip">ZIP / postal code</label><input class="co-in" id="co-zip" type="text" autocomplete="postal-code" placeholder="77002"></div>
+        <div class="form-g"><label class="form-lbl" for="co-country">Country</label><select class="co-in" id="co-country" onchange="onCountryChange()"></select></div>
+        <div class="form-g co-full"><label class="form-lbl" for="co-email">Email <span style="color:var(--muted)">(optional — for order confirmation)</span></label><input class="co-in" id="co-email" type="email" autocomplete="email" placeholder="you@email.com"></div>
+      </div>
+      <p class="co-err" id="co-err"></p>
+    </div>
   </div>
   <div class="cart-ft">
-    <div class="cart-sub"><span class="cart-sub-lbl">Subtotal</span><span class="cart-sub-amt" id="cart-total">$0</span></div>
-    <button class="checkout-btn" onclick="handleCheckout()">Proceed to Checkout</button>
+    <div class="cart-sub" id="cart-sub-row"><span class="cart-sub-lbl">Subtotal</span><span class="cart-sub-amt" id="cart-total">$0</span></div>
+    <div class="co-totals" id="co-totals">
+      <div class="co-tot-row"><span class="co-tot-lbl">Subtotal</span><span class="co-tot-amt" id="co-sub">$0.00</span></div>
+      <div class="co-tot-row"><span class="co-tot-lbl">Shipping</span><span class="co-tot-amt" id="co-ship">$0.00</span></div>
+      <div class="co-tot-row"><span class="co-tot-lbl">Tax</span><span class="co-tot-amt" id="co-tax">$0.00</span></div>
+      <div class="co-tot-row co-tot-main"><span class="co-tot-lbl">Total</span><span class="co-tot-amt" id="co-total">$0.00</span></div>
+      <div class="co-note" id="co-note"></div>
+      <button class="co-edit" onclick="editAddress()">Edit address</button>
+    </div>
+    <button class="checkout-btn" id="checkout-btn" onclick="handleCheckout()">Proceed to Checkout</button>
   </div>
 </div>
 
@@ -619,6 +669,7 @@ function syncCart(){
   b.textContent=count; b.classList.toggle('show',count>0);
   document.getElementById('cart-total').textContent='$'+total.toFixed(2);
   renderCartRows();
+  invalidateQuote();
 }
 function renderCartRows(){
   const body=document.getElementById('cart-body');
@@ -634,17 +685,127 @@ function renderCartRows(){
   });
 }
 function toggleCart(){document.getElementById('cart-drawer').classList.toggle('open');document.getElementById('cart-veil').classList.toggle('open');}
+
+/* ── CHECKOUT: ADDRESS → QUOTE → PAY ──────────────────────────
+   Step 1 'cart'    : "Proceed to Checkout" reveals the address step
+   Step 2 'address' : validate address → POST /quote → render totals
+   Step 3 'review'  : "Pay $X" → POST /checkout → redirect to Square
+─────────────────────────────────────────────────────────────── */
+const US_STATES=[['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],['CO','Colorado'],['CT','Connecticut'],['DE','Delaware'],['DC','District of Columbia'],['FL','Florida'],['GA','Georgia'],['HI','Hawaii'],['ID','Idaho'],['IL','Illinois'],['IN','Indiana'],['IA','Iowa'],['KS','Kansas'],['KY','Kentucky'],['LA','Louisiana'],['ME','Maine'],['MD','Maryland'],['MA','Massachusetts'],['MI','Michigan'],['MN','Minnesota'],['MS','Mississippi'],['MO','Missouri'],['MT','Montana'],['NE','Nebraska'],['NV','Nevada'],['NH','New Hampshire'],['NJ','New Jersey'],['NM','New Mexico'],['NY','New York'],['NC','North Carolina'],['ND','North Dakota'],['OH','Ohio'],['OK','Oklahoma'],['OR','Oregon'],['PA','Pennsylvania'],['RI','Rhode Island'],['SC','South Carolina'],['SD','South Dakota'],['TN','Tennessee'],['TX','Texas'],['UT','Utah'],['VT','Vermont'],['VA','Virginia'],['WA','Washington'],['WV','West Virginia'],['WI','Wisconsin'],['WY','Wyoming']];
+const COUNTRIES=[['US','United States'],['CA','Canada'],['MX','Mexico'],['GB','United Kingdom'],['IE','Ireland'],['FR','France'],['DE','Germany'],['ES','Spain'],['IT','Italy'],['AU','Australia'],['NZ','New Zealand'],['JP','Japan'],['JM','Jamaica'],['TT','Trinidad and Tobago'],['BS','Bahamas']];
+let coStep='cart', quoteData=null, shipAddress=null;
+function money(n){return '$'+Number(n||0).toFixed(2);}
+function initCheckoutFields(){
+  const st=document.getElementById('co-state');
+  if(st&&!st.options.length){st.innerHTML='<option value="">Select</option>'+US_STATES.map(s=>`<option value="${s[0]}">${s[1]}</option>`).join('');}
+  const cy=document.getElementById('co-country');
+  if(cy&&!cy.options.length){cy.innerHTML=COUNTRIES.map(c=>`<option value="${c[0]}"${c[0]==='US'?' selected':''}>${c[1]}</option>`).join('');}
+  ['co-name','co-line1','co-line2','co-city','co-zip','co-email'].forEach(id=>{const el=document.getElementById(id);if(el) el.addEventListener('input',invalidateQuote);});
+  ['co-state','co-region'].forEach(id=>{const el=document.getElementById(id);if(el) el.addEventListener('change',invalidateQuote);});
+}
+function onCountryChange(){
+  const us=document.getElementById('co-country').value==='US';
+  document.getElementById('co-state').parentElement.style.display=us?'':'none';
+  document.getElementById('co-region-wrap').style.display=us?'none':'';
+  document.getElementById('co-zip').placeholder=us?'77002':'Postal code';
+  invalidateQuote();
+}
+function coErr(msg){const e=document.getElementById('co-err');if(!msg){e.classList.remove('show');e.textContent='';return false;}e.textContent=msg;e.classList.add('show');return false;}
+function readAddress(){
+  const v=id=>(document.getElementById(id)?.value||'').trim();
+  const country=v('co-country')||'US';
+  const us=country==='US';
+  const state=us?v('co-state'):v('co-region').toUpperCase();
+  const zip=v('co-zip');
+  const email=v('co-email');
+  if(!v('co-name'))return coErr('Please enter the recipient’s full name.');
+  if(!v('co-line1'))return coErr('Please enter address line 1.');
+  if(!v('co-city'))return coErr('Please enter a city.');
+  if(!state)return coErr(us?'Please select a state.':'Please enter a province / region.');
+  if(us&&!/^[A-Z]{2}$/.test(state))return coErr('Please select a valid 2-letter state.');
+  if(us&&!/^\d{5}(-\d{4})?$/.test(zip))return coErr('Please enter a valid 5-digit ZIP code.');
+  if(!us&&zip.length<3)return coErr('Please enter a valid postal code.');
+  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))return coErr('Please enter a valid email address, or leave it blank.');
+  coErr('');
+  const parts=v('co-name').split(/\s+/);
+  return {name:v('co-name'),firstName:parts[0]||'',lastName:parts.slice(1).join(' ')||'',line1:v('co-line1'),line2:v('co-line2'),city:v('co-city'),state:state,zip:zip,country:country};
+}
+function cartLineItems(){return cart.map(i=>({name:i.name,price:i.price||1,quantity:i.qty}));}
+function invalidateQuote(){
+  if(coStep==='review'||quoteData){
+    quoteData=null;shipAddress=null;
+    document.getElementById('co-totals').classList.remove('show');
+    document.getElementById('cart-sub-row').style.display='';
+    const btn=document.getElementById('checkout-btn');
+    btn.disabled=false;btn.classList.remove('co-spin');
+    btn.textContent=document.getElementById('co-step').classList.contains('open')?'Calculate Shipping & Tax':'Proceed to Checkout';
+    coStep=document.getElementById('co-step').classList.contains('open')?'address':'cart';
+  }
+}
+function showAddressStep(){
+  initCheckoutFields();
+  document.getElementById('co-step').classList.add('open');
+  coStep='address';
+  document.getElementById('checkout-btn').textContent='Calculate Shipping & Tax';
+  setTimeout(()=>{document.getElementById('co-step').scrollIntoView({behavior:'smooth',block:'nearest'});},80);
+}
+function editAddress(){
+  quoteData=null;shipAddress=null;
+  document.getElementById('co-totals').classList.remove('show');
+  document.getElementById('cart-sub-row').style.display='';
+  showAddressStep();
+}
+function renderTotals(q,addr){
+  document.getElementById('cart-sub-row').style.display='none';
+  document.getElementById('co-sub').textContent=money(q.subtotal);
+  const shipEl=document.getElementById('co-ship');
+  shipEl.innerHTML=q.freeShippingApplied?'<span class="co-free">Free</span>':money(q.shippingFee);
+  document.getElementById('co-tax').textContent=money(q.taxAmount);
+  document.getElementById('co-total').textContent=money(q.total);
+  const bits=[];
+  bits.push('Tax by address — '+addr.city+', '+(addr.state||addr.country)+(q.taxRate>0?' ('+q.taxRate+'%)':''));
+  if(q.freeShippingApplied)bits.push('Free US standard shipping applied (orders $75+).');
+  else if(addr.country!=='US')bits.push('International shipping.');
+  else bits.push('US standard shipping (5–8 business days).');
+  document.getElementById('co-note').innerHTML=bits.join('<br>');
+  document.getElementById('co-totals').classList.add('show');
+}
 async function handleCheckout(){
   if(!cart.length){alert('Your bag is empty.');return;}
-  const btn=document.querySelector('.checkout-btn');
-  btn.textContent='Loading...';btn.disabled=true;
+  const btn=document.getElementById('checkout-btn');
+  if(coStep==='cart'){showAddressStep();return;}
+
+  if(coStep==='address'){
+    const addr=readAddress();
+    if(!addr)return;
+    btn.disabled=true;btn.classList.add('co-spin');btn.textContent='Calculating…';
+    try{
+      const res=await fetch(CONFIG.cfWorkerUrl+'/quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lineItems:cartLineItems(),shippingAddress:addr})});
+      const q=await res.json();
+      if(!res.ok||q.error)throw new Error(q.error||'Quote failed');
+      quoteData=q;shipAddress=addr;
+      renderTotals(q,addr);
+      coStep='review';
+      btn.textContent='Pay '+money(q.total);
+    }catch(e){coErr('Could not calculate shipping & tax: '+e.message);btn.textContent='Calculate Shipping & Tax';}
+    btn.disabled=false;btn.classList.remove('co-spin');
+    return;
+  }
+
+  /* coStep === 'review' → create the Square payment link */
+  if(!quoteData||!shipAddress){coStep='address';showAddressStep();return;}
+  btn.disabled=true;btn.classList.add('co-spin');btn.textContent='Loading…';
   try{
-    const res=await fetch(CONFIG.cfWorkerUrl+'/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lineItems:cart.map(i=>({name:i.name,price:i.price||1,quantity:i.qty}))})});
+    const payload={lineItems:cartLineItems(),shippingAddress:shipAddress};
+    const email=(document.getElementById('co-email')?.value||'').trim();
+    if(email)payload.customerEmail=email;
+    const res=await fetch(CONFIG.cfWorkerUrl+'/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const data=await res.json();
-    if(data.checkoutUrl) window.location.href=data.checkoutUrl;
-    else alert('Error: '+(data.error||'Checkout failed'));
+    if(data.checkoutUrl){window.location.href=data.checkoutUrl;return;}
+    alert('Error: '+(data.error||'Checkout failed'));
   }catch(e){alert('Network error: '+e.message);}
-  btn.textContent='Proceed to Checkout';btn.disabled=false;
+  btn.disabled=false;btn.classList.remove('co-spin');
+  btn.textContent='Pay '+money(quoteData?quoteData.total:'');
 }
 
 /* ROUTER */
